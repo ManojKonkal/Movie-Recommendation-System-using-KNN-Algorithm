@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>What2Watch</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🎬 What2Watch</div>
+  </header>
+
+  <main class="container">
+    <section class="search-section">
+      <h1>Because fake love doesn’t deserve screen time.</h1>
+      <form id="recommend-form">
+        <div class="input-row">
+          <input type="text" id="language-input" placeholder="Enter language (e.g. Hindi)" required />
+          <button type="submit">Get Recommendations</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="recommendations" id="recommendations">
+      <h2>Recommended for You</h2>
+      <ul id="recommendation-list"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; © 2025 — Built by the heart you broke. Movies stayed. You didn’t</p>
+  </footer>
+
+  <script>
+    document.getElementById("recommend-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const language = document.getElementById("language-input").value.trim();
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000/recommend", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ language: language })
+        });
+
+        const data = await response.json();
+        const list = document.getElementById("recommendation-list");
+        list.innerHTML = "";
+
+        if (data.recommendations && data.recommendations.length > 0) {
+          data.recommendations.forEach(movie => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+              <div class="movie-card">
+                <h3>${movie["movie name"]}</h3>
+                <p>⭐ Rating: ${movie["rating(10)"]} / 10</p>
+                <p>👍 Votes: ${movie["votes"].toLocaleString()}</p>
+              </div>
+            `;
+            list.appendChild(li);
+          });
+        } else {
+          list.innerHTML = "<p>No movies found for this language.</p>";
+        }
+      } catch (error) {
+        console.error("Error fetching recommendations:", error);
+      }
+    });
+  </script>
+</body>
+</html>
