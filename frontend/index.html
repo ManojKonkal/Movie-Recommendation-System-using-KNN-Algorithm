@@ -23,6 +23,33 @@
       </form>
     </section>
 
+    <!-- Filter & Sort Controls -->
+    <section class="search-section">
+      <div class="input-row" style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
+
+        <div class="sort-control" style="display: flex; align-items: center; gap: 0.5rem;">
+          <label for="sort-select">Sort by:</label>
+          <select id="sort-select">
+            <option value="rating">Rating</option>
+            <option value="votes">Votes</option>
+            <option value="name">Name</option>
+          </select>
+        </div>
+
+        <div class="filter-control" style="display: flex; align-items: center; gap: 0.5rem;">
+          <label for="genre-select">Filter by Genre:</label>
+          <select id="genre-select">
+            <option value="All">All</option>
+            <option value="Action">Action</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Drama">Drama</option>
+            <option value="Horror">Horror</option>
+          </select>
+        </div>
+
+      </div>
+    </section>
+
     <section class="recommendations" id="recommendations">
       <h2>Recommended for You</h2>
       <ul id="recommendation-list"></ul>
@@ -30,45 +57,10 @@
   </main>
 
   <footer>
-    <p>&copy; © 2025 — Built by the heart you broke. Movies stayed. You didn’t</p>
+    <p>&copy; 2025 — Built by the heart you broke. Movies stayed. You didn’t.</p>
   </footer>
 
-  <script>
-    document.getElementById("recommend-form").addEventListener("submit", async function (e) {
-      e.preventDefault();
-
-      const language = document.getElementById("language-input").value.trim();
-
-      try {
-        const response = await fetch("http://127.0.0.1:5000/recommend", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ language: language })
-        });
-
-        const data = await response.json();
-        const list = document.getElementById("recommendation-list");
-        list.innerHTML = "";
-
-        if (data.recommendations && data.recommendations.length > 0) {
-          data.recommendations.forEach(movie => {
-            const li = document.createElement("li");
-            li.innerHTML = `
-              <div class="movie-card">
-                <h3>${movie["movie name"]}</h3>
-                <p>⭐ Rating: ${movie["rating(10)"]} / 10</p>
-                <p>👍 Votes: ${movie["votes"].toLocaleString()}</p>
-              </div>
-            `;
-            list.appendChild(li);
-          });
-        } else {
-          list.innerHTML = "<p>No movies found for this language.</p>";
-        }
-      } catch (error) {
-        console.error("Error fetching recommendations:", error);
-      }
-    });
-  </script>
+  <!-- JavaScript File -->
+  <script src="script.js"></script>
 </body>
 </html>
