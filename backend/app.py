@@ -13,6 +13,11 @@ warnings.filterwarnings("ignore", category=UserWarning, module='sklearn')
 app = Flask(__name__)
 CORS(app)
 
+# Health check route
+@app.route('/')
+def home():
+    return "✅ Movie Recommendation System is running!"
+
 # Define path to dataset
 csv_path = os.path.join(os.path.dirname(__file__), 'data', 'indian movies.csv')
 
