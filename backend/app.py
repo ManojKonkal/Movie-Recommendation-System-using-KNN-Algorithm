@@ -84,4 +84,5 @@ def recommend():
 
 # Run the Flask app
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=10000, debug=True)
+    port = int(os.environ.get("PORT", 10000))  # fallback to port 10000 if not set
+    app.run(host='0.0.0.0', port=port, debug=True)
