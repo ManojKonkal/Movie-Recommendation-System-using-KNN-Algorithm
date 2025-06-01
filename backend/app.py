@@ -58,7 +58,7 @@ def recommend():
 
     # Filter dataset by language
     filtered_movies = movies[movies['language'].str.lower() == language.lower()]
-    
+
     # Filter by genre if selected
     if genre_filter and genre_filter != 'All':
         filtered_movies = filtered_movies[filtered_movies['genre'].str.contains(genre_filter, case=False, na=False)]
@@ -79,4 +79,4 @@ def recommend():
 
 # Run the Flask app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=10000, debug=True)
